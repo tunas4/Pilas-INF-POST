@@ -1,7 +1,7 @@
-class pila:
+class Pila:
     def __init__(self):
         self.max = 10
-        self.pila = [] * self.max
+        self.pila = [None] * self.max
         self.top = -1
 
     def push(self, value):
@@ -18,3 +18,9 @@ class pila:
             return value
         else:
             print("Stack Underflow")
+
+    def peek(self):
+        if self.top > -1:
+            return self.pila[self.top]
+        else:
+            print("Stack Empty")
