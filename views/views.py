@@ -1,5 +1,6 @@
 import tkinter as tk
 import convertidor as c
+import re
 
 def introducir_expresion():
     root = tk.Tk()
@@ -9,7 +10,8 @@ def introducir_expresion():
     label.pack(pady=10)
 
     def limite_caracteres(texto):
-        return len(texto) <= 50
+        patron = r'^[a-zA-Z0-9*^+\-/]*$'
+        return len(texto) <= 50 and re.match(patron, texto) is not None
 
     validar = root.register(limite_caracteres)
     entry = tk.Entry(root, validate="key", validatecommand=(validar, "%P"))
@@ -30,6 +32,7 @@ def introducir_expresion():
 
     root.mainloop()
 
+
 def mostrar():
     root = tk.Tk()
     root.geometry("400x200")
@@ -47,6 +50,12 @@ def creditos():
     root.geometry("400x200")
 
     label = tk.Label(root, text="Creditos")
+    labelMateria = tk.Label(root, text="Estructura de datos Aplicadas")
+    labelJonathan = tk.Label(root, text="Jonathan Ivan Castro Saenz | 23170035")
+    labelNoe = tk.Label(root, text="Noé Abel Vargas López | 23170106")
     label.pack(pady=10)
+    labelMateria.pack(pady=10)
+    labelJonathan.pack(pady=10)
+    labelNoe.pack(pady=10)
 
     root.mainloop()
