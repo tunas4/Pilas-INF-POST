@@ -47,6 +47,12 @@ def creditos():
     root.geometry("400x200")
 
     label = tk.Label(root, text="Creditos")
+    labelMateria = tk.Label(root, text="Estructura de datos Aplicadas")
+    labelJonathan = tk.Label(root, text="Jonathan Ivan Castro Saenz | 23170035")
+    labelNoe = tk.Label(root, text="Noé Abel Vargas López | 23170106")
     label.pack(pady=10)
+    labelMateria.pack(pady=10)
+    labelJonathan.pack(pady=10)
+    labelNoe.pack(pady=10)
 
     root.mainloop()
