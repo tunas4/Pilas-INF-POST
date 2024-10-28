@@ -2,6 +2,31 @@ import tkinter as tk
 import convertidor as c
 import re
 
+def infijatoPostfija(expresion):
+    precedencia = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+    salida = []
+    operadores = []
+
+    for caracter in expresion:
+        if caracter.isalnum():
+            salida.append(caracter)
+        elif caracter == '(':
+            operadores.append(caracter)
+        elif caracter == ')':
+            while operadores and operadores[-1] != '(':
+                salida.append(operadores.pop())
+            operadores.pop()
+        else:
+            while (operadores and operadores[-1] != '(' and
+                    precedencia.get(caracter, 0) <= precedencia.get(operadores[-1], 0)):
+                salida.append(operadores.pop())
+            operadores.append(caracter)
+
+    while operadores:
+        salida.append(operadores.pop())
+
+    return ''.join(salida)
+
 def introducir_expresion():
     root = tk.Tk()
     root.geometry("300x200")
@@ -10,8 +35,15 @@ def introducir_expresion():
     label.pack(pady=10)
 
     def limite_caracteres(texto):
-        patron = r'^[a-zA-Z0-9*^+\-/]*$'
-        return len(texto) <= 50 and re.match(patron, texto) is not None
+        patron = r'^[a-zA-Z0-9*^+\-/()]*$'
+        
+        if len(texto) > 50 or re.match(patron, texto) is None:
+            return False
+        
+        if re.search(r'[\+\-\*/\^]{2,}', texto):
+            return False
+
+        return True
 
     validar = root.register(limite_caracteres)
     entry = tk.Entry(root, validate="key", validatecommand=(validar, "%P"))
@@ -19,7 +51,7 @@ def introducir_expresion():
 
     def calcular():
         try:
-            resultado = c.infijatoPostfija(entry.get())
+            resultado = infijatoPostfija(entry.get())
             resultado_label.config(text="La expresión en notación postfija es: " + resultado)
         except Exception as e:
             resultado_label.config(text=f"Error: {e}")
@@ -31,7 +63,6 @@ def introducir_expresion():
     resultado_label.pack(pady=10)
 
     root.mainloop()
-
 
 def mostrar():
     root = tk.Tk()
