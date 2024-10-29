@@ -14,10 +14,25 @@ def introducir_expresion():
             return False
         if re.search(r'[\+\-\*/\^]{2,}', texto):
             return False
+        
+        balance = 0
+        for char in texto:
+            if char == '(':
+                balance += 1
+            elif char == ')':
+                balance -= 1
+            if balance < 0:
+                return False
+        
         return True
 
-    validar = root.register(limite_caracteres)
-    entry = tk.Entry(root, validate="key", validatecommand=(validar, "%P"))
+    def validar_expresion(event):
+        texto = entry.get() + event.char
+        if not limite_caracteres(texto):
+            return "break"
+
+    entry = tk.Entry(root, validate="key")
+    entry.bind("<Key>", validar_expresion)
     entry.pack(pady=10)
     
     def calcular():
@@ -34,6 +49,7 @@ def introducir_expresion():
     resultado_label.pack(pady=10)
     
     root.mainloop()
+
 
 def mostrar():
     root = tk.Tk()
